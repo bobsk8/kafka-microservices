@@ -11,6 +11,10 @@ export class ProductService {
         private productsRepository: Repository<Product>,
     ) { }
 
+    create(product: any): Promise<Product> {
+        return this.productsRepository.save(product);
+      }
+
     findAll(): Promise<Product[]> {
         return this.productsRepository.find();
     }

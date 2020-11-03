@@ -3,11 +3,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { CoreModule } from './core/core.module';
 import { Product } from './entities/product.entity';
+import { ProductModule } from './product/product.module';
 
 @Module({
-  imports: [CoreModule,
+  imports: [
     TypeOrmModule.forRoot({
       logging: true,
       synchronize: true,
@@ -18,7 +18,8 @@ import { Product } from './entities/product.entity';
       entities: [
         Product
       ]
-    }),],
+    }),
+    ProductModule,],
   controllers: [AppController],
   providers: [AppService],
 })
