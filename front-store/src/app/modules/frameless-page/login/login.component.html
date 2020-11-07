@@ -1,0 +1,13 @@
+<div class = "container">
+	<div class="wrapper">
+		<form #fLogin="ngForm" [formGroup]="loginForm" (ngSubmit)="onSubmit(fLogin)" name="Login_Form" class="form-signin">       
+		    <h3 class="form-signin-heading">Welcome Back! Please Sign In</h3>
+			  <hr class="colorgraph"><br>
+			  
+			  <input formControlName="username" type="text" class="form-control" name="username" placeholder="username" />
+			  <input formControlName="password" type="password" class="form-control" name="password" placeholder="Password"/>     		  
+			 
+			  <button class="btn btn-lg btn-primary btn-block"  name="Submit" value="Login" type="Submit">Login</button>  			
+		</form>			
+	</div>
+</div>
