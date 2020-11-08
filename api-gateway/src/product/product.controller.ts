@@ -2,6 +2,7 @@ import { Controller, Get, Post, UsePipes, ValidationPipe, Body, Param, Put, Dele
 import { microserviceConfig } from 'src/microserviceConfig';
 import { Client, ClientKafka } from '@nestjs/microservices';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
+import { CONSTANTS } from 'common';
 
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
@@ -19,11 +20,11 @@ export class ProductController implements OnModuleInit {
 
     onModuleInit() {
         const requestPatterns = [
-            'create-product',
-            'findall-products',
-            'findone-product',
-            'update-product',
-            'remove-product'
+            CONSTANTS.PRODUCT_TOPICS.CREATE_PRODUCT,
+            CONSTANTS.PRODUCT_TOPICS.FIND_ALL_PRODUCTS,
+            CONSTANTS.PRODUCT_TOPICS.FIND_ONE_PRODUCT,
+            CONSTANTS.PRODUCT_TOPICS.UPDATE_PRODUCT,
+            CONSTANTS.PRODUCT_TOPICS.REMOVE_PRODUCT,
         ];
         requestPatterns.forEach(pattern => {
             this.client.subscribeToResponseOf(pattern);

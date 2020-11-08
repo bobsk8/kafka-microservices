@@ -2,6 +2,7 @@ import { Controller, Get, Post, UsePipes, ValidationPipe, Body, Param, Put, Dele
 import { microserviceConfig } from 'src/microserviceConfig';
 import { Client, ClientKafka } from '@nestjs/microservices';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
+import { CONSTANTS } from 'common';
 
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -19,11 +20,11 @@ export class UserController implements OnModuleInit {
 
     onModuleInit() {
         const requestPatterns = [
-            'create-user',
-            'findall-users',
-            'findone-user',
-            'update-user',
-            'remove-user'
+            CONSTANTS.USER_TOPICS.CREATE_USER,
+            CONSTANTS.USER_TOPICS.FIND_ALL_USERS,
+            CONSTANTS.USER_TOPICS.FIND_ONE_USER,
+            CONSTANTS.USER_TOPICS.UPDATE_USER,
+            CONSTANTS.USER_TOPICS.REMOVE_USER,
         ];
         requestPatterns.forEach(pattern => {
             this.client.subscribeToResponseOf(pattern);

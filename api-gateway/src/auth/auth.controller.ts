@@ -1,6 +1,7 @@
 import { Controller, Post, Body, ValidationPipe, UsePipes, OnModuleInit, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Client, ClientKafka } from '@nestjs/microservices';
+import { CONSTANTS } from 'common';
 
 import { microserviceConfig } from 'src/microserviceConfig';
 import { CredentialsDto } from './dto/credentials.dto';
@@ -18,7 +19,7 @@ export class AuthController implements OnModuleInit {
 
     onModuleInit() {
         const requestPatterns = [
-            'login-user'
+            CONSTANTS.USER_TOPICS.LOGIN_USER
         ];
         requestPatterns.forEach(pattern => {
             this.client.subscribeToResponseOf(pattern);
@@ -31,7 +32,7 @@ export class AuthController implements OnModuleInit {
 
         const { username, password } = credentialsDto;
 
-        this.client.send<string>('login-user', JSON.stringify(username))
+        this.client.send<string>(CONSTANTS.USER_TOPICS.LOGIN_USER, JSON.stringify(username))
             .subscribe((user: any) => {
                 if (user && user.password === passwordHash(password)) {
                     const payload = { username: user.username, sub: user.id };
