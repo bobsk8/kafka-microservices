@@ -15,7 +15,7 @@ export class ProductController {
 
     @MessagePattern(CONSTANTS.PRODUCT_TOPICS.CREATE_PRODUCT)
     handleCreateProduct(@Payload() payload: any): Promise<any> {
-        const { createProductDto } = JSON.stringify(payload)['value'];
+        const { createProductDto } = JSON.parse(payload.value);
         this.logger.log('handleCreateProduct', JSON.stringify(payload));
         return this.productService.create(createProductDto);
     }
@@ -28,21 +28,21 @@ export class ProductController {
 
     @MessagePattern(CONSTANTS.PRODUCT_TOPICS.FIND_ONE_PRODUCT)
     handleProductFindOne(@Payload() payload: any): Promise<any> {
-        const { id } = JSON.stringify(payload)['value'];
+        const { id } = JSON.parse(payload.value);
         this.logger.log('handleProductFindOne', JSON.stringify(payload));
         return this.productService.findOne(id);
     }
 
     @MessagePattern(CONSTANTS.PRODUCT_TOPICS.UPDATE_PRODUCT)
     handleProductUpdate(@Payload() payload: any): Promise<any> {
-        const { id, updateProductDto } = JSON.stringify(payload)['value'];
+        const { id, updateProductDto } = JSON.parse(payload.value);
         this.logger.log('handleProductUpdate', JSON.stringify(payload));
         return this.productService.update(id, updateProductDto);
     }
 
     @MessagePattern(CONSTANTS.PRODUCT_TOPICS.REMOVE_PRODUCT)
     handleProductRemove(@Payload() payload: any): Promise<any> {
-        const { id } = JSON.stringify(payload)['value'];
+        const { id } = JSON.parse(payload.value);
         this.logger.log('handleProductRemove', JSON.stringify(payload));
         return this.productService.remove(id);
     }

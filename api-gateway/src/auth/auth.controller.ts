@@ -26,24 +26,24 @@ export class AuthController implements OnModuleInit {
         });
     }
 
-    @Post('login')
+    @Post()
     @UsePipes(ValidationPipe)
     async login(@Body() credentialsDto: CredentialsDto) {
-
         const { username, password } = credentialsDto;
+        try {
+            const user: any = await this.client.send<string>(CONSTANTS.USER_TOPICS.LOGIN_USER, JSON.stringify(username)).toPromise();
+            if (user && user.password === passwordHash(password)) {
+                const payload = { username: user.username, sub: user.id };
+                return {
+                    user,
+                    token: this.jwtService.sign(payload)
+                };
+            } else {
+                throw new Error;
 
-        this.client.send<string>(CONSTANTS.USER_TOPICS.LOGIN_USER, JSON.stringify(username))
-            .subscribe((user: any) => {
-                if (user && user.password === passwordHash(password)) {
-                    const payload = { username: user.username, sub: user.id };
-                    return {
-                        user,
-                        token: this.jwtService.sign(payload)
-                    };
-                }
-                if (!user) {
-                    throw new UnauthorizedException(`username or password is incorrect`);
-                }
-            });
+            }
+        } catch (err) {
+            throw new UnauthorizedException(`username or password is incorrect`);
+        }
     }
 }

@@ -32,6 +32,7 @@ export class ProductController implements OnModuleInit {
     }
 
     @Post()
+    @UseGuards(JwtAuthGuard)
     @UsePipes(ValidationPipe)
     create(@Body() createProductDto: CreateProductDto) {
         return this.client.send<string>('create-product', JSON.stringify(createProductDto));

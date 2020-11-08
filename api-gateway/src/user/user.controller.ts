@@ -32,6 +32,7 @@ export class UserController implements OnModuleInit {
     }
 
     @Post()
+    @UseGuards(JwtAuthGuard)
     @UsePipes(ValidationPipe)
     create(@Body() createUserDto: CreateUserDto) {
         return this.client.send<string>('create-user', JSON.stringify(createUserDto));
