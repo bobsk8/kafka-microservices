@@ -17,33 +17,53 @@ export class ProductController {
     handleCreateProduct(@Payload() payload: any): Promise<any> {
         const { createProductDto } = JSON.parse(payload.value);
         this.logger.log('handleCreateProduct', JSON.stringify(payload));
-        return this.productService.create(createProductDto);
+        return this.productService.create(createProductDto)
+        .catch(err => {
+            this.logger.log('handleCreateProduct error', err);
+            return err;
+        });
     }
 
     @MessagePattern(CONSTANTS.PRODUCT_TOPICS.FIND_ALL_PRODUCTS)
     handleProductFindAll(): Promise<any[]> {
         this.logger.log('handleProductFindAll');
-        return this.productService.findAll();
+        return this.productService.findAll()
+        .catch(err => {
+            this.logger.log('handleProductFindAll error', err);
+            return err;
+        });
     }
 
     @MessagePattern(CONSTANTS.PRODUCT_TOPICS.FIND_ONE_PRODUCT)
     handleProductFindOne(@Payload() payload: any): Promise<any> {
         const { id } = JSON.parse(payload.value);
         this.logger.log('handleProductFindOne', JSON.stringify(payload));
-        return this.productService.findOne(id);
+        return this.productService.findOne(id)
+        .catch(err => {
+            this.logger.log('handleProductFindOne error', err);
+            return err;
+        });
     }
 
     @MessagePattern(CONSTANTS.PRODUCT_TOPICS.UPDATE_PRODUCT)
     handleProductUpdate(@Payload() payload: any): Promise<any> {
         const { id, updateProductDto } = JSON.parse(payload.value);
         this.logger.log('handleProductUpdate', JSON.stringify(payload));
-        return this.productService.update(id, updateProductDto);
+        return this.productService.update(id, updateProductDto)
+        .catch(err => {
+            this.logger.log('handleProductUpdate error', err);
+            return err;
+        });
     }
 
     @MessagePattern(CONSTANTS.PRODUCT_TOPICS.REMOVE_PRODUCT)
     handleProductRemove(@Payload() payload: any): Promise<any> {
         const { id } = JSON.parse(payload.value);
         this.logger.log('handleProductRemove', JSON.stringify(payload));
-        return this.productService.remove(id);
+        return this.productService.remove(id)
+        .catch(err => {
+            this.logger.log('handleProductRemove error', err);
+            return err;
+        });
     }
 }

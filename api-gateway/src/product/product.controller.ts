@@ -35,31 +35,31 @@ export class ProductController implements OnModuleInit {
     @UseGuards(JwtAuthGuard)
     @UsePipes(ValidationPipe)
     create(@Body() createProductDto: CreateProductDto) {
-        return this.client.send<string>('create-product', JSON.stringify(createProductDto));
+        return this.client.send<string>(CONSTANTS.PRODUCT_TOPICS.CREATE_PRODUCT, JSON.stringify(createProductDto));
     }
 
     @Get()
     @UseGuards(JwtAuthGuard)
     findAll() {
-        return this.client.send<string>('findall-products', '');
+        return this.client.send<string>(CONSTANTS.PRODUCT_TOPICS.FIND_ALL_PRODUCTS, '');
     }
 
     @Get(':id')
     @UseGuards(JwtAuthGuard)
     findOne(@Param('id') id) {
-        return this.client.send<string>('findone-product', JSON.stringify({ id }));
+        return this.client.send<string>(CONSTANTS.PRODUCT_TOPICS.FIND_ONE_PRODUCT, JSON.stringify({ id }));
     }
 
     @Put(':id')
     @UsePipes(ValidationPipe)
     @UseGuards(JwtAuthGuard)
     update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
-        return this.client.send<string>('update-product', JSON.stringify({ id, updateProductDto }));
+        return this.client.send<string>(CONSTANTS.PRODUCT_TOPICS.UPDATE_PRODUCT, JSON.stringify({ id, updateProductDto }));
     }
 
     @Delete(':id')
     @UseGuards(JwtAuthGuard)
     remove(@Param('id') id) {
-        return this.client.send<string>('remove-product', JSON.stringify({ id }));
+        return this.client.send<string>(CONSTANTS.PRODUCT_TOPICS.REMOVE_PRODUCT, JSON.stringify({ id }));
     }
 }

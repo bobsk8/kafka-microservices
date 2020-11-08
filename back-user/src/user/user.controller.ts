@@ -15,43 +15,67 @@ export class UserController {
 
     @MessagePattern(CONSTANTS.USER_TOPICS.LOGIN_USER)
     handleLogin(@Payload() payload: any): Promise<any> {
-        const { username } = JSON.parse(payload.value);
-        this.logger.log('handleLogin', JSON.stringify(payload));
-        return this.userService.findByUsername(username);
+        const { username } = payload.value;
+        this.logger.log('handleLogin', JSON.stringify(username));
+        return this.userService.findByUsername(username)
+        .catch(err => {
+            this.logger.log('handleLogin error', err);
+            return err;
+        });
     }
 
     @MessagePattern(CONSTANTS.USER_TOPICS.CREATE_USER)
     handleCreateUser(@Payload() payload: any): Promise<any> {
-        const { createUserDto } = JSON.parse(payload.value);
-        this.logger.log('handleCreateUser', JSON.stringify(payload));
-        return this.userService.create(createUserDto);
+        const createUserDto = payload.value;
+        this.logger.log('handleCreateUser', JSON.stringify(createUserDto));
+        return this.userService.create(createUserDto)
+        .catch(err => {
+            this.logger.log('handleCreateUser error', err);
+            return err;
+        });
     }
 
     @MessagePattern(CONSTANTS.USER_TOPICS.FIND_ALL_USERS)
     handleUserFindAll(): Promise<any[]> {
         this.logger.log('handleUserFindAll');
-        return this.userService.findAll();
+        return this.userService.findAll()
+        .catch(err => {
+            this.logger.log('handleUserFindAll error', err);
+            return err;
+        });
     }
 
     @MessagePattern(CONSTANTS.USER_TOPICS.FIND_ONE_USER)
     handleUserFindOne(@Payload() payload: any): Promise<any> {
-        const { id } = JSON.parse(payload.value);
-        this.logger.log('handleUserFindOne', JSON.stringify(payload));
-        return this.userService.findOne(id);
+        const { id } = payload.value;
+        this.logger.log('handleUserFindOne', JSON.stringify(id));
+        return this.userService.findOne(id)
+        .catch(err => {
+            this.logger.log('handleUserFindOne error', err);
+            return err;
+        });
     }
 
     @MessagePattern(CONSTANTS.USER_TOPICS.UPDATE_USER)
     handleUserUpdate(@Payload() payload: any): Promise<any> {
-        const { id, updateUserDto } = JSON.parse(payload.value);
-        this.logger.log('handleUserUpdate', JSON.stringify(payload));
-        return this.userService.update(id, updateUserDto);
+        const { id, updateUserDto } = payload.value;
+        this.logger.log('handleUserUpdate', JSON.stringify({ id, updateUserDto }));
+        return this.userService.update(id, updateUserDto)
+        .catch(err => {
+            this.logger.log('handleUserUpdate error', err);
+            return err;
+        });
     }
 
     @MessagePattern(CONSTANTS.USER_TOPICS.REMOVE_USER)
     handleUserRemove(@Payload() payload: any): Promise<any> {
-        const { id } = JSON.parse(payload.value);
-        this.logger.log('handleUserRemove', JSON.stringify(payload));
-        return this.userService.remove(id);
+        const { id } = payload.value;
+        this.logger.log('handleUserRemove', JSON.stringify(id));
+        return this.userService.remove(id)
+        .catch(err => {
+            this.logger.log('handleUserRemove error', err);
+            return err;
+        });
     }
 
 }
