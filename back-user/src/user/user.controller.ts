@@ -12,15 +12,45 @@ export class UserController {
     @Client(microserviceConfig)
     client: ClientKafka;
 
-    @MessagePattern('findall-users')
-    handleUserFindAll(@Payload() payload: any): Promise<any[]> {
-        this.logger.log('handleUserFindAll', JSON.stringify(payload));
-        return this.userService.findAll();
+    @MessagePattern('login-user')
+    handleLogin(@Payload() payload: any): Promise<any> {
+        const { username } = JSON.stringify(payload)['value'];
+        this.logger.log('handleLogin', JSON.stringify(payload));
+        return this.userService.findByUsername(username);
     }
 
     @MessagePattern('create-user')
-    async handleUserCreate(@Payload() payload: any): Promise<any> {
-        this.logger.log('handleUserCreate', JSON.stringify(payload));
-        return await this.userService.create(payload.value);
+    handleCreateUser(@Payload() payload: any): Promise<any> {
+        const { createUserDto } = JSON.stringify(payload)['value'];
+        this.logger.log('handleCreateUser', JSON.stringify(payload));
+        return this.userService.create(createUserDto);
     }
+
+    @MessagePattern('findall-users')
+    handleUserFindAll(): Promise<any[]> {
+        this.logger.log('handleUserFindAll');
+        return this.userService.findAll();
+    }
+
+    @MessagePattern('findone-user')
+    handleUserFindOne(@Payload() payload: any): Promise<any> {
+        const { id } = JSON.stringify(payload)['value'];
+        this.logger.log('handleUserFindOne', JSON.stringify(payload));
+        return this.userService.findOne(id);
+    }
+
+    @MessagePattern('update-user')
+    handleUserUpdate(@Payload() payload: any): Promise<any> {
+        const { id, updateUserDto } = JSON.stringify(payload)['value'];
+        this.logger.log('handleUserUpdate', JSON.stringify(payload));
+        return this.userService.update(id, updateUserDto);
+    }
+
+    @MessagePattern('remove-user')
+    handleUserRemove(@Payload() payload: any): Promise<any> {
+        const { id } = JSON.stringify(payload)['value'];
+        this.logger.log('handleUserRemove', JSON.stringify(payload));
+        return this.userService.remove(id);
+    }
+
 }

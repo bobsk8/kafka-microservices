@@ -12,15 +12,37 @@ export class ProductController {
     @Client(microserviceConfig)
     client: ClientKafka;
 
+    @MessagePattern('create-product')
+    handleCreateProduct(@Payload() payload: any): Promise<any> {
+        const { createProductDto } = JSON.stringify(payload)['value'];
+        this.logger.log('handleCreateProduct', JSON.stringify(payload));
+        return this.productService.create(createProductDto);
+    }
+
     @MessagePattern('findall-products')
-    handleProductFindAll(@Payload() payload: any): Promise<any[]> {
-        this.logger.log('handleProductFindAll', JSON.stringify(payload));
+    handleProductFindAll(): Promise<any[]> {
+        this.logger.log('handleProductFindAll');
         return this.productService.findAll();
     }
 
-    @MessagePattern('create-product')
-    async handleProductCreate(@Payload() payload: any): Promise<any> {
-        this.logger.log('handleProductCreate', JSON.stringify(payload));
-        return await this.productService.create(payload.value);
+    @MessagePattern('findone-product')
+    handleProductFindOne(@Payload() payload: any): Promise<any> {
+        const { id } = JSON.stringify(payload)['value'];
+        this.logger.log('handleProductFindOne', JSON.stringify(payload));
+        return this.productService.findOne(id);
+    }
+
+    @MessagePattern('update-product')
+    handleProductUpdate(@Payload() payload: any): Promise<any> {
+        const { id, updateProductDto } = JSON.stringify(payload)['value'];
+        this.logger.log('handleProductUpdate', JSON.stringify(payload));
+        return this.productService.update(id, updateProductDto);
+    }
+
+    @MessagePattern('remove-product')
+    handleProductRemove(@Payload() payload: any): Promise<any> {
+        const { id } = JSON.stringify(payload)['value'];
+        this.logger.log('handleProductRemove', JSON.stringify(payload));
+        return this.productService.remove(id);
     }
 }

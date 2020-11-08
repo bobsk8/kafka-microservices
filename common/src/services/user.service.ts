@@ -25,4 +25,12 @@ export class UserService {
   async remove(id: string): Promise<void> {
     await this.usersRepository.delete(id);
   }
+
+  findByUsername(username: string): Promise<User> {
+    return this.usersRepository.findOne(username);
+  }
+
+  update(id: string, user: any): Promise<any> {
+    return this.usersRepository.update(id, user);
+  }
 }
